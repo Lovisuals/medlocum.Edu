@@ -222,7 +222,7 @@ model Resource {
 
 model Expert {
   id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId     String  @map("user_id") @db.Uuid
+  userId     String  @unique @map("user_id") @db.Uuid
   user       User    @relation(fields: [userId], references: [id])
   speciality String? @db.VarChar(200)
   bio        String? @db.Text
