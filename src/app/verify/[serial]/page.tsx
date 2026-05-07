@@ -2,13 +2,13 @@ import { verifyCertificate } from '@/lib/services/CertificateService';
 import { Badge } from '@/components/ui/badge';
 
 interface VerifyPageProps {
-  params: { serial: string };
-  searchParams: { sig: string };
+  params: Promise<{ serial: string }>;
+  searchParams: Promise<{ sig: string }>;
 }
 
 export default async function VerifyPage({ params, searchParams }: VerifyPageProps) {
-  const { serial } = params;
-  const { sig } = searchParams;
+  const { serial } = await params;
+  const { sig } = await searchParams;
 
   const result = await verifyCertificate(serial, sig);
 
