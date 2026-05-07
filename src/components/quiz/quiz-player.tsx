@@ -5,6 +5,7 @@ import { useQuiz } from '@/hooks/use-quiz';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import Link from 'next/link';
 
 interface QuizPlayerProps {
   courseId: string;
@@ -102,7 +103,9 @@ export default function QuizPlayer({ courseId }: QuizPlayerProps) {
             </div>
           ))}
         </div>
-        <Button href="/home" className="mt-8 w-full">Back to Dashboard</Button>
+        <Link href="/home" style={{ width: '100%', display: 'block' }}>
+          <Button className="mt-8 w-full">Back to Dashboard</Button>
+        </Link>
       </div>
     );
   }
