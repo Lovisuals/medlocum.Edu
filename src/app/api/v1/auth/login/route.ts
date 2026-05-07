@@ -9,6 +9,29 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
   }
 
+  if (process.env.MOCK_MODE === 'true') {
+    const mockPayload = { sub: 'mock-user-123', email: email.toLowerCase(), role: 'learner', tenantId: 'mock-tenant' };
+    const accessToken = await createAccessToken(mockPayload);
+    const refreshToken = await createRefreshToken(mockPayload);
+
+    const res = NextResponse.json({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      user: {
+        id: 'mock-user-123',
+        firstName: 'Review',
+        lastName: 'Practitioner',
+        email: email.toLowerCase(),
+        role: 'learner',
+        jobTitle: 'Medical Doctor',
+        department: 'Clinical Medicine'
+      }
+    });
+
+    res.cookies.set('access_token', accessToken, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 28800 });
+    return res;
+  }
+
   const users = await db.query(
     'SELECT * FROM users WHERE email = $1 AND is_active = TRUE AND tenant_id = $2',
     [email.toLowerCase(), process.env.NEXT_PUBLIC_TENANT_ID]
