@@ -5,6 +5,26 @@ import { db } from '@/lib/db';
 import { getLatestPlacementReadiness } from '@/lib/services/ComplianceService';
 
 export async function GET(req: NextRequest) {
+  if (process.env.MOCK_MODE === 'true') {
+    return NextResponse.json({
+      greeting: 'Welcome back (Mock Mode)',
+      compliance: {
+        isReady: false,
+        blockers: ['MDCN License Verification Pending', 'Ethics Module Incomplete'],
+        mandatoryComplete: 8,
+        roleModulesComplete: 0,
+        cmeUnits: 12.5
+      },
+      dueSoon: [
+        { id: '1', title: 'Infection Control', category: 'Mandatory', status: 'due_soon', durationMins: 60 },
+        { id: '2', title: 'Fire Safety', category: 'Mandatory', status: 'overdue', durationMins: 30 }
+      ],
+      recentlyCompleted: [
+        { id: '3', title: 'Health & Safety', category: 'Mandatory', score: 95, completedAt: new Date().toISOString() }
+      ]
+    });
+  }
+
   try {
     const session = await getSessionFromCookies();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

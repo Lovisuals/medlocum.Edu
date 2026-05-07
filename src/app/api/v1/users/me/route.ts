@@ -4,6 +4,18 @@ import { db } from '@/lib/db';
 import { encryptPII, decryptPII } from '@/lib/services/ComplianceService';
 
 export async function GET(req: NextRequest) {
+  if (process.env.MOCK_MODE === 'true') {
+    return NextResponse.json({
+      firstName: 'Review',
+      lastName: 'Practitioner',
+      email: 'practitioner@example.ng',
+      role: 'learner',
+      jobTitle: 'Medical Doctor',
+      department: 'Surgery',
+      licenseNumber: 'MDCN/12345/TEMP'
+    });
+  }
+
   try {
     const session = await getSessionFromCookies();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
