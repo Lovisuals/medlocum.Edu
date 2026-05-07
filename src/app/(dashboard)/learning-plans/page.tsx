@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import PlanRenderer from '@/components/ai/plan-renderer';
 
 export default function LearningPlansPage() {
@@ -70,7 +71,7 @@ export default function LearningPlansPage() {
           <div className="text-center py-12 text-muted">Loading plans…</div>
         ) : plans.length === 0 ? (
           <div className="card text-center py-12">
-            <p className="text-gray-400">You haven't generated any learning plans yet.</p>
+            <p className="text-gray-400">You haven&apos;t generated any learning plans yet.</p>
           </div>
         ) : (
           plans.map(plan => (
